@@ -26,7 +26,7 @@ class StorageObject:
     def read(self) -> bytes:
         raise NotImplementedError
 
-    def write(self) -> None:
+    def write(self, content: bytes) -> None:
         raise NotImplementedError
 
     def delete(self) -> None:

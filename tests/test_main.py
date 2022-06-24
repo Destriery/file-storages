@@ -1,32 +1,13 @@
 import pytest
 
 from src.main import FileObject
-from src.storages import Storage
 
 
 @pytest.fixture()
-def storage(constants):
-    class TestStorage(Storage):
-        def __init__(self, path: str) -> None:
-            ...
-
-        def read(self) -> bytes:
-            return constants.CONTENT.value
-
-        def write(self, content: bytes) -> None:
-            pass
-
-        def delete(self) -> None:
-            pass
-
-    return TestStorage
-
-
-@pytest.fixture()
-def file_object(storage, constants):
+def file_object(test_storage, constants):
     path = f'{constants.BUCKET_NAME.value}/{constants.OBJECT_NAME.value}'
 
-    FileObject.storage = storage
+    FileObject.storage = test_storage()
 
     return FileObject(path)
 

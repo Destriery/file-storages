@@ -1,9 +1,19 @@
 import pytest
 
-from src.storages import S3Storage
-from src.config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+from src.storages import Storage, S3Storage
+
+from .config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 
+def test_build_object(test_storage_instance: Storage, constants):
+    path = f'{constants.BUCKET_NAME.value}/{constants.OBJECT_NAME.value}'
+
+    file_object = test_storage_instance.build_object(path)
+
+    assert isinstance(file_object, test_storage_instance.object_type)
+
+
+# S3Storage
 @pytest.fixture()
 def storage():
     return S3Storage(
@@ -12,13 +22,5 @@ def storage():
     )
 
 
-def test_build_resource(storage: S3Storage):
+def test_build_resource_for_s3(storage: S3Storage):
     assert storage.resource.meta.service_name == 's3'  # type: ignore
-
-
-def test_build_object(storage: S3Storage, constants):
-    path = f'{constants.BUCKET_NAME.value}/{constants.OBJECT_NAME.value}'
-
-    file_object = storage.build_object(path)
-
-    assert isinstance(file_object, storage.object_type)

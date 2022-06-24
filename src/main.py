@@ -28,4 +28,4 @@ class FileObject:
         self._action('delete')
 
     def _action(self, action: str, *args, **kwargs) -> Any:
-        return getattr(self._object, action)(self._object, *args, **kwargs)
+        return getattr(self._object, action)(*args, **kwargs)

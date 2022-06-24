@@ -1,7 +1,10 @@
 import pytest
 from botocore.exceptions import ClientError
 
+from .config import AWS_CAN_CONNECT
 
+
+@pytest.mark.skipif(not AWS_CAN_CONNECT, reason="Not enough parameters to connect to AWS")
 def test_get_nonexist_content(resource, constants):
     bucket = resource.Bucket(constants.BUCKET_NAME.value)
     file_object = bucket.Object(constants.OBJECT_NAME.value)
@@ -12,6 +15,7 @@ def test_get_nonexist_content(resource, constants):
     assert error.typename == 'NoSuchKey'
 
 
+@pytest.mark.skipif(not AWS_CAN_CONNECT, reason="Not enough parameters to connect to AWS")
 def test_save_content(resource, constants):
     bucket = resource.Bucket(constants.BUCKET_NAME.value)
     file_object = bucket.Object(constants.OBJECT_NAME.value)
@@ -21,6 +25,7 @@ def test_save_content(resource, constants):
     assert response['ResponseMetadata']['HTTPStatusCode'] == 200
 
 
+@pytest.mark.skipif(not AWS_CAN_CONNECT, reason="Not enough parameters to connect to AWS")
 def test_get_content(resource, constants):
     bucket = resource.Bucket(constants.BUCKET_NAME.value)
     file_object = bucket.Object(constants.OBJECT_NAME.value)
@@ -30,6 +35,7 @@ def test_get_content(resource, constants):
     assert content == constants.CONTENT.value
 
 
+@pytest.mark.skipif(not AWS_CAN_CONNECT, reason="Not enough parameters to connect to AWS")
 def test_delete_object(resource, constants):
     bucket = resource.Bucket(constants.BUCKET_NAME.value)
     file_object = bucket.Object(constants.OBJECT_NAME.value)
