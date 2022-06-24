@@ -1,61 +1,31 @@
 import boto3
-from typing import Protocol
+
+from .storage_objects import (
+    StorageObject, S3StorageObject,
+    S3Resource
+)
 
 
 class Storage:
     """Base class for storages"""
-    def __init__(self, path: str) -> None:
+    object_type: type[StorageObject]
+
+    def __init__(self, *args, **kwargs) -> None:
         raise NotImplementedError
 
-    def read(self) -> bytes:
-        raise NotImplementedError
-
-    def write(self) -> None:
-        raise NotImplementedError
-
-    def delete(self) -> None:
-        raise NotImplementedError
-
-
-class S3Object(Protocol):
-    """Result of the "S3Bucket.Object(...)" invocation"""
-    def get(self) -> dict: ...
-    def put(self, Body: bytes) -> dict: ...
-    def delete(self) -> dict: ...
-
-
-class S3Bucket(Protocol):
-    """Result of the "S3Resource.Bucket(...)" invocation"""
-    def Object(self, object_name: str): ...
-
-
-class S3Resource(Protocol):
-    """Result of the "boto3.resource('s3', ...)" invocation"""
-    def Bucket(self, bucket_name: str) -> S3Bucket: ...
+    def build_object(self, path: str, *args, **kwargs) -> StorageObject:
+        return self.object_type(path, *args, **kwargs)
 
 
 class S3Storage(Storage):
-    """The class implements the capabilities of reading, writing and deleting s3 objects"""
-    def __init__(self, path: str, resource: S3Resource | None = None) -> None:
-        bucket_name, object_name = path.strip('/').split('/', maxsplit=1)
+    """Bulding s3 resources and objects"""
+    object_type: type[S3StorageObject] = S3StorageObject
 
-        resource = resource or self._build_resource()
+    def __init__(self, *args, **kwargs) -> None:
+        self.resource = self.build_resource(*args, **kwargs)
 
-        self._object = self._build_object(resource, bucket_name, object_name)
+    def build_resource(self, *args, **kwargs) -> S3Resource:
+        return boto3.resource('s3', *args, **kwargs)  # type: ignore
 
-    def read(self) -> bytes:
-        return self._object.get()['Body'].read()
-
-    def write(self, content) -> None:
-        self._object.put(Body=content)
-
-    def delete(self) -> None:
-        self._object.delete()
-
-    def _build_resource(self) -> S3Resource:
-        return boto3.resource('s3')  # type: ignore
-
-    def _build_object(self, resource: S3Resource, bucket_name: str, object_name: str) -> S3Object:
-        bucket = resource.Bucket(bucket_name)
-
-        return bucket.Object(object_name)  # type: ignore
+    def build_object(self, path: str) -> S3StorageObject:
+        return self.object_type(path, self.resource)

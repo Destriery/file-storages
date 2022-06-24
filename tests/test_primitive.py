@@ -11,6 +11,7 @@ def test_get_nonexist_content(resource, constants):
 
     assert error.typename == 'NoSuchKey'
 
+
 def test_save_content(resource, constants):
     bucket = resource.Bucket(constants.BUCKET_NAME.value)
     file_object = bucket.Object(constants.OBJECT_NAME.value)

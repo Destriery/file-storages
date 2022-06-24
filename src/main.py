@@ -16,6 +16,8 @@ class FileObject:
         if not getattr(self, 'storage'):
             raise ValueError('FileObject should have a storage property')
 
+        self._object = self.storage.build_object(path)
+
     def read(self) -> bytes:
         return self._action('read')
 
@@ -26,4 +28,4 @@ class FileObject:
         self._action('delete')
 
     def _action(self, action: str, *args, **kwargs) -> Any:
-        return getattr(self.storage, action)(self.storage, *args, **kwargs)
+        return getattr(self._object, action)(self._object, *args, **kwargs)
