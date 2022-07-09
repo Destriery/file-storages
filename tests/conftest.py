@@ -1,3 +1,4 @@
+from typing import Any
 import boto3
 import pytest
 
@@ -32,7 +33,7 @@ def resource():
 @pytest.fixture()
 def test_storage_object(constants):
     class TestStorageObject(StorageObject):
-        def __init__(self, path: str) -> None:
+        def __init__(self, path: str, resource: Any) -> None:
             ...
 
         def read(self) -> bytes:
@@ -51,12 +52,13 @@ def test_storage_object(constants):
 def test_storage_object_instance(test_storage_object, constants):
     path = f'{constants.BUCKET_NAME.value}/{constants.OBJECT_NAME.value}'
 
-    return test_storage_object(path)
+    return test_storage_object(path, None)
 
 
 @pytest.fixture()
 def test_storage(test_storage_object):
     class TestStorage(Storage):
+        resource = None
         object_type = test_storage_object
 
         def __init__(self) -> None:
@@ -68,3 +70,19 @@ def test_storage(test_storage_object):
 @pytest.fixture()
 def test_storage_instance(test_storage, constants):
     return test_storage()
+
+
+@pytest.fixture()
+def test_storage_without_resource(test_storage_object):
+    class TestStorage(Storage):
+        object_type = test_storage_object
+
+        def __init__(self) -> None:
+            ...
+
+    return TestStorage
+
+
+@pytest.fixture()
+def test_storage_without_resource_instance(test_storage_without_resource, constants):
+    return test_storage_without_resource()

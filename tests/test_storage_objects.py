@@ -1,6 +1,6 @@
 import pytest
 
-from src.storage_objects import StorageObject, S3StorageObject, S3Resource
+from src.storage_objects import StorageObject, S3StorageObject, BotoS3Resource
 
 from .config import AWS_CAN_CONNECT
 
@@ -19,7 +19,7 @@ def test_delete(test_storage_object_instance: StorageObject, constants):
 
 # S3StorageObject
 @pytest.fixture()
-def s3_storage_object(resource: S3Resource, constants):
+def s3_storage_object(resource: BotoS3Resource, constants):
     path = f'{constants.BUCKET_NAME.value}/{constants.OBJECT_NAME.value}'
 
     return S3StorageObject(path, resource)
