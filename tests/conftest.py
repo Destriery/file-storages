@@ -33,7 +33,7 @@ def resource():
 @pytest.fixture()
 def test_storage_object(constants):
     class TestStorageObject(StorageObject):
-        def __init__(self, path: str, resource: Any) -> None:
+        def __init__(self, path: str, base_path: str, resource: Any = None) -> None:
             ...
 
         def read(self) -> bytes:

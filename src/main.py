@@ -4,19 +4,18 @@ from .storages import Storage
 
 
 class FileObject:
-    path: str
     storage: Storage
 
-    def __init__(self, path: str, storage: Storage | None = None) -> None:
-        self.path = path
+    def __init__(
+        self,
+        path: str,
+        base_path: str | None = None,
+        storage: Storage | None = None
+    ) -> None:
 
-        if storage:
-            self.storage = storage
+        if storage: self.storage = storage
 
-        if not getattr(self, 'storage'):
-            raise ValueError('FileObject should have a storage property')
-
-        self._object = self.storage.build_object(path)
+        self._object = self.storage.build_object(path, base_path)
 
     def read(self) -> bytes:
         return self._action('read')

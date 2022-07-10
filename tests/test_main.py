@@ -5,11 +5,9 @@ from src.main import FileObject
 
 @pytest.fixture()
 def file_object(test_storage, constants):
-    path = f'{constants.BUCKET_NAME.value}/{constants.OBJECT_NAME.value}'
-
     FileObject.storage = test_storage()
 
-    return FileObject(path)
+    return FileObject(constants.OBJECT_NAME.value, constants.BUCKET_NAME.value)
 
 
 def test_write(file_object: FileObject, constants):
