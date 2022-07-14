@@ -3,7 +3,7 @@ from typing import Any
 from .storages import Storage
 
 
-class FileObject:
+class File:
     storage: Storage
 
     def __init__(
