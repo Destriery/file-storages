@@ -4,8 +4,8 @@ import pytest
 
 from enum import Enum
 
-from src.storages import Storage
-from src.storage_objects import StorageObject
+from src.file_storages.storages._base.storage import Storage
+from src.file_storages.storages._base.storage_object import StorageObject
 
 from .config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, BUCKET_NAME
 

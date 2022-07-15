@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "file-storages"
+version = "0.1.0"
+description = ""
+authors = ["Destriery <izzon@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "file_storages", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+boto3 = { version = "^1.24.29", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.1.2"
+flake8 = "^4.0.1"
+coverage = "^6.4.2"
+pytest-cov = "^3.0.0"
+
+
+[tool.poetry.extras]
+s3 = ["boto3"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,6 +1,7 @@
 import pytest
 
-from src.storages import Storage, S3Storage
+from src.file_storages.storages._base.storage import Storage
+from src.file_storages.storages.s3 import S3Storage
 
 from .config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 

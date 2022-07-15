@@ -1,6 +1,6 @@
 import pytest
 
-from src.main import File
+from src.file_storages.file import File
 
 
 @pytest.fixture()

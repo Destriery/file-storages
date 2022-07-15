@@ -1,6 +1,8 @@
 import pytest
 
-from src.storage_objects import OSStorageObject, StorageObject, S3StorageObject, BotoS3Resource
+from src.file_storages.storages._base.storage_object import StorageObject
+from src.file_storages.storages.os import OSStorageObject
+from src.file_storages.storages.s3 import S3StorageObject, BotoS3Resource
 
 from .config import AWS_CAN_CONNECT
 

@@ -1,11 +1,6 @@
-import boto3
 from typing import Any
 
-
-from .storage_objects import (
-    StorageObject, S3StorageObject, OSStorageObject,
-    BotoS3Resource
-)
+from .storage_object import StorageObject
 
 
 class Storage:
@@ -23,15 +18,3 @@ class Storage:
 
     def _build_resource(*args, **kwargs) -> Any:
         return None
-
-
-class S3Storage(Storage):
-    object_type = S3StorageObject
-
-    def _build_resource(self, *args, **kwargs) -> BotoS3Resource:
-        return boto3.resource('s3', *args, **kwargs)  # type: ignore
-
-
-class OSStorage(Storage):
-    base_path = ''
-    object_type = OSStorageObject

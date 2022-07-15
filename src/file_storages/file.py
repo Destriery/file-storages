@@ -1,6 +1,6 @@
 from typing import Any
 
-from .storages import Storage
+from .storages._base.storage import Storage
 
 
 class File:
