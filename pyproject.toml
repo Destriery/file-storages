@@ -23,5 +23,5 @@ pytest-cov = "^3.0.0"
 s3 = ["boto3"]
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.1.0a6"]
 build-backend = "poetry.core.masonry.api"
